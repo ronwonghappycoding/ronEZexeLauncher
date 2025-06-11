@@ -24,6 +24,13 @@ def elevate():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, f'"{script}" {params}', None, 1)
         sys.exit()
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 def save_config(path, argument, instances):
     with open(CONFIG_FILE, "w") as f:
         f.write(f"{path}\n{argument}\n{instances}")
@@ -107,6 +114,7 @@ def start_gui():
     window.title("ronEZexeLauncher")
     window.geometry("320x340+0+0")
     window.resizable(False, False)
+    window.iconbitmap(resource_path("ronEZexeLaunchericon.ico"))
 
     tk.Button(window, text="📂 Browse .exe location", width=20, height=2, command=browse_file).pack(pady=(15, 5))
     exe_label = tk.Label(window, text="No file selected", font=("Segoe UI", 9))
